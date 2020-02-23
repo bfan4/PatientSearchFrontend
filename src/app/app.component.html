@@ -1,0 +1,116 @@
+<div style="background-color: #0C2E54">
+  <br><br><br><br><br><br><br><br>
+  <div style="text-align:center">
+    <h1 style="font-family: sans-serif;">
+      <i class="fa fa-user-md" style="font-size:50px; color:rgb(209, 177, 63);margin-right: 20px;"></i>
+      <label style="font-size:50px; color: rgb(209, 177, 63)">Basic Patient Search</label>
+    </h1>
+  </div>
+  <br><br>
+
+<!-- Start: Select the search type -->
+  <div class="row add-top-margin">
+    <div class="col-sm-4"></div>
+    <div class="col-sm-2">
+      <form [formGroup]="selectType">
+        <label style="font-size:20px; color: rgb(209, 177, 63)">Search type: </label>
+        <select class="form-control" formControlName="type" style="border-radius: 20px; border-color:#0F2E4D;">
+          <option selected disabled value="">Search type</option>
+          <option value="name">By Patient Name</option>
+          <option value="word">By Key Word</option>
+        </select>
+      </form>
+    </div>
+    <div class="col-sm-4"></div>
+  </div>
+<!-- End: Select the search type -->
+
+<br>
+
+<!-- Start: Search by name input section -->
+<div *ngIf="showContentName" class="row add-top-margin">
+    <div class="col-sm-4"></div>
+    <div class="col-sm-4">
+      <form [formGroup]="patientSearchForm">
+        <div class="form-group">
+          <label style="font-size:20px; color: rgb(209, 177, 63)">Patient Name: </label>
+          <input type="text" placeholder="&#xF002; search here..." class="form-control" formControlName="patientName"
+            (keyup)="onKeyName($event)"
+            style="border-radius: 20px; border-color:rgb(209, 177, 63);font-family: FontAwesome;">
+        </div>
+        <div class="error">
+          {{errorMsg}}
+        </div>
+        <br>
+      </form>
+    </div>
+    <div class="col-sm-4"></div>
+  </div>
+  <!-- End: Search by name input section -->
+
+  <!-- Start: Search by key word input section -->
+  <div *ngIf="showContentWord" class="row add-top-margin">
+    <div class="col-sm-4"></div>
+    <div class="col-sm-4">
+      <form [formGroup]="keyWordSearchForm">
+        <div class="form-group">
+          <label style="font-size:20px; color: rgb(209, 177, 63)">Key Word: </label>
+          <input type="text" placeholder="&#xF002; search here..." class="form-control" formControlName="keyWord"
+            (keyup)="onKeyWord($event)" style="border-radius: 20px; border-color:#4877e8;font-family: FontAwesome;">
+        </div>
+        <div class="error">
+          {{errorMsg}}
+        </div>
+        <br>
+      </form>
+    </div>
+    <div class="col-sm-4"></div>
+  </div>
+  <!-- End: Search by key word input section -->
+</div>
+
+<br>
+
+<!-- Start: Show the result searched by name -->
+<div *ngIf="showContentName">
+  <div class="col-sm-2"></div>
+  <div class="col-sm-8">
+    <div>
+      <ul>
+        <li *ngFor="let item of doc">
+          <pre style="padding: 0;padding-left: 20px;">
+          <button class="btn btn-primary pull-right" (click)="print(item)">Print</button>
+          <read-more  [dataLength]="dataLength" style="height: 70px;">
+            <span id="{{item}}">{{item}}</span>
+          </read-more>
+        </pre>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="col-sm-2"></div>
+</div>
+<!-- End: Show the result searched by name -->
+
+<!-- Start: Show the result searched by key word -->
+<div *ngIf="showContentWord">
+  <div class="col-sm-2"></div>
+  <div class="col-sm-8">
+    <div>
+      <ul>
+        <li *ngFor="let item of doc">
+          <pre style="padding: 0;padding-left: 20px;">
+            <button class="btn btn-primary pull-right"(click)="print(item)">Print</button>   
+          <read-more  [dataLength]="dataLength" style="height: 70px;">
+            <div id="{{item}}" [innerHTML]="item|keyword:keyWord"></div>
+          </read-more>
+        </pre>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="col-sm-2"></div>
+</div>
+<!-- End: Show the result searched by key word -->
+
+<router-outlet></router-outlet>
